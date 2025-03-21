@@ -15,7 +15,7 @@ const DashCards = () => {
   ];
 
   return (
-    <div className="overflow-x-auto scrollbar-hide flex gap-4 px-2 py-2">
+    <div className="overflow-x-auto scrollbar-hide flex gap-4 py-2">
       <div className="flex gap-4">
         {dashCards.map((item) => (
           <div key={item.id} className={`flex flex-col items-start justify-between gap-2 p-4 ${item.color} shadow-md rounded-md w-28 h-24`}>
