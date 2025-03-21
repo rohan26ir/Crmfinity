@@ -4,7 +4,7 @@ import { Outlet } from 'react-router-dom';
 
 const MainLayouts = () => {
   return (
-    <div>
+    <div className='text-white'>
 
       <header>
         <div className='bg-[#2B3251]'>
@@ -13,7 +13,7 @@ const MainLayouts = () => {
       </header>
 
       {/* Main */}
-      <main>
+      <main className=''>
         <Outlet></Outlet>
       </main>
 
