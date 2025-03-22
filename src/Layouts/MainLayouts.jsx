@@ -7,7 +7,7 @@ const MainLayouts = () => {
     <div className='text-white'>
 
       <header>
-        <div className='bg-[#2B3251]'>
+        <div className='pb-10'>
            <Navbar></Navbar>
         </div>
       </header>

@@ -21,7 +21,7 @@ const Navbar = () => {
   ];
   
   return (
-    <div className=''>
+    <div className=' fixed top-0 left-0 w-full z-50 bg-[#2B3251] shadow-md'>
       <div className="flex w-full items-center h-10 py-0.5 px-4 shadow-sm ">
         <div className="navbar-start w-[10%] flex gap-2 justify-between">
           

@@ -1,21 +1,25 @@
 import React, { useEffect, useState } from "react";
 import useAxiosPublic from "../../../Hooks/useAxiosPublic";
 
-const DashboardData = () => {
+const DashboardData = ({ activeFilter, filterFormData }) => {
   const axiosPublic = useAxiosPublic();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editId, setEditId] = useState(null);
   const [editData, setEditData] = useState({});
 
-  // Fetch Data on Component Mount
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [activeFilter, filterFormData]);
 
   const fetchData = async () => {
     try {
-      const response = await axiosPublic.get("/dashboard");
+      const queryParams = new URLSearchParams({
+        filter: activeFilter,
+        ...filterFormData,
+      }).toString();
+
+      const response = await axiosPublic.get(`/dashboard?${queryParams}`);
       console.log("📊 Fetched Data:", response.data);
       setData(response.data);
       setLoading(false);
@@ -55,14 +59,8 @@ const DashboardData = () => {
         alert("⚠ Failed to update data!");
       }
     } catch (error) {
-      console.error(
-        "❌ Error updating data:",
-        error.response?.data || error.message
-      );
-      alert(
-        "❌ Update failed: " +
-          (error.response?.data?.message || "Unknown error")
-      );
+      console.error("❌ Error updating data:", error.response?.data || error.message);
+      alert("❌ Update failed: " + (error.response?.data?.message || "Unknown error"));
     }
   };
 
@@ -77,12 +75,8 @@ const DashboardData = () => {
               <th className="border border-gray-300 px-4 py-2">Select</th>
               <th className="border border-gray-300 px-4 py-2">ID</th>
               <th className="border border-gray-300 px-4 py-2">Company Name</th>
-              <th className="border border-gray-300 px-4 py-2">
-                Customer Name
-              </th>
-              <th className="border border-gray-300 px-4 py-2">
-                Primary Phone
-              </th>
+              <th className="border border-gray-300 px-4 py-2">Customer Name</th>
+              <th className="border border-gray-300 px-4 py-2">Primary Phone</th>
               <th className="border border-gray-300 px-4 py-2">Cell Phone</th>
               <th className="border border-gray-300 px-4 py-2">State</th>
               <th className="border border-gray-300 px-4 py-2">Email</th>
@@ -99,26 +93,9 @@ const DashboardData = () => {
                   <td className="border border-gray-300 px-4 py-2">
                     <input type="checkbox" />
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {item._id}
-                  </td>
-
-                  {/* Editable Cells */}
-                  {[
-                    "companyName",
-                    "customerName",
-                    "primaryPhone",
-                    "cellPhone",
-                    "state",
-                    "email",
-                    "assignedTo",
-                    "status",
-                    "source",
-                  ].map((field) => (
-                    <td
-                      key={field}
-                      className="border border-gray-300 px-4 py-2"
-                    >
+                  <td className="border border-gray-300 px-4 py-2">{item._id}</td>
+                  {["companyName", "customerName", "primaryPhone", "cellPhone", "state", "email", "assignedTo", "status", "source"].map((field) => (
+                    <td key={field} className="border border-gray-300 px-4 py-2">
                       {editId === item._id ? (
                         <input
                           type="text"
@@ -131,8 +108,6 @@ const DashboardData = () => {
                       )}
                     </td>
                   ))}
-
-                  {/* Action Buttons */}
                   <td className="border border-gray-300 px-4 py-2">
                     {editId === item._id ? (
                       <button
