@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 const FilterButton = ({ label, isActive, onClick }) => (
   <div
@@ -29,14 +30,11 @@ const FilterInput = ({ options, type, isCustomDate, placeholder, isDisabled }) =
 const FilterForm = ({ isOpen }) => {
   if (!isOpen) return null;
 
-
   const filterFields = [
     { options: ['Filtered by Created', 'Filtered by Modified', 'Filtered by Lead Status'] },
-    { 
-      options: ['Last 30 Days', 'Last 7 Days', 'Last Year', 'Current Month', 'Custom'],
-    },
-    { type: 'date', placeholder: 'from' },
-    { type: 'date', placeholder: 'to' },
+    { options: ['Last 30 Days', 'Last 7 Days', 'Last Year', 'Current Month', 'Custom'] },
+    { type: 'number', placeholder: 'from' },
+    { type: 'number', placeholder: 'to' },
     { type: 'text', placeholder: 'First Name' },
     { type: 'text', placeholder: 'Last Name' },
     { type: 'email', placeholder: 'Email' },
@@ -65,26 +63,50 @@ const FilterForm = ({ isOpen }) => {
 };
 
 const CustomFilter = () => {
-  const [activeFilter, setActiveFilter] = useState(null);
-  const filters = ['DEALS', 'ISO', 'Secondary Founding', 'Pending Stips', 'Opportunities', 'Syndication', 'Defaults', 'Recent Leads', 'UnderWriting'];
+  const filters = ['DEALS', 'ISO', 'Secondary Founding', 'Pending Stips', 'Opportunities', 'UnderWriting', 'Syndication', 'Defaults', 'Recent Leads'];
+
+  const [activeFilter, setActiveFilter] = useState('DEALS'); // Default to "DEALS"
+  const [isFilterVisible, setIsFilterVisible] = useState(true); // Default to visible
+
+  const toggleHide = () => {
+    setIsFilterVisible(prev => !prev);
+  };
 
   return (
     <div className='text-black'>
-      <div className='flex justify-between items-center bg-white border-[1px] border-gray-600'>
+      <div className='flex justify-between items-center bg-white border-[1px] border-gray-600 h-11 '>
         <div className='flex items-center gap-1'>
           {filters.map((item) => (
             <FilterButton key={item} label={item} isActive={activeFilter === item} onClick={() => setActiveFilter(item)} />
           ))}
         </div>
 
-        <div className='bg-[#275B89] text-white'>
-          <ul className='menu menu-horizontal'>
+        {/* Toggle Button */}
+        <div onClick={toggleHide} className='flex items-end justify-end relative top-0 left-6 cursor-pointer'>
+          <div className='bg-blue-600 h-10 w-10 flex items-center justify-center rounded-t-3xl'>
+            <FaSearch className='text-white' />
+          </div>
+        </div>
+
+        <div className=' text-white'>
+          <ul className='menu menu-horizontal h-10'>
             <li>
               <details>
-                <summary>Actions</summary>
-                <ul className='p-2 text-black'>
+                <summary className='hover:bg-blue-600 bg-blue-600 flex items-center justify-center bottom-1 relative'>Actions</summary>
+                <ul className='p-0.5 text-black relative top-4 right-0  w-44'>
                   <li><a>New Leads</a></li>
-                  <li><a>Submenu 2</a></li>
+                  <li><a>Reassign Leads</a></li>
+                  <li><a>Reassign Deactive Users Leads</a></li>
+                  <li><a>Reassign Leads Status</a></li>
+                  <li><a>Reassign Leads Sourch/Campaign</a></li>
+                  <li><a>Status Update</a></li>
+                  <li><a>ISO Email Markating</a></li>
+                  <li><a>Email Markating</a></li>
+                  <li><a>SMS Markating</a></li>
+                  <li><a>Voicemail Markating</a></li>
+                  <li><a>Recycale campaign</a></li>
+                  <li><a>Import Lead</a></li>
+                  <li><a>Delete Lead</a></li>
                 </ul>
               </details>
             </li>
@@ -92,7 +114,8 @@ const CustomFilter = () => {
         </div>
       </div>
 
-      <FilterForm isOpen={!!activeFilter} />
+      {/* Filter Section Toggle */}
+      {isFilterVisible && <FilterForm isOpen={!!activeFilter} />}
     </div>
   );
 };
